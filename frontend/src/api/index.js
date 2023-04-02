@@ -1,4 +1,5 @@
-var socket = new WebSocket("ws://localhost:8080/ws");
+var ws_host = process.env.REACT_APP_BACKEND_HOST || "localhost:8080";
+var socket = new WebSocket(`ws://${ws_host}/ws`);
 
 let connect = cb => {
   console.log("Attempting Connection...");
