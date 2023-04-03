@@ -7,6 +7,8 @@ import (
 	"github.com/winand/realtime-chat-go-react/pkg/websocket"
 )
 
+var newClientID = 0
+
 // define our WebSocket endpoint
 func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 	// upgrade this connection to a WebSocket
@@ -14,12 +16,15 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 	conn, err := websocket.Upgrade(w, r)
 	if err != nil {
 		fmt.Fprintf(w, "%+V\n", err)
+		return
 	}
 
 	client := &websocket.Client{
+		ID:   fmt.Sprint(newClientID),
 		Conn: conn,
 		Pool: pool,
 	}
+	newClientID += 1
 
 	pool.Register <- client
 	client.Read()

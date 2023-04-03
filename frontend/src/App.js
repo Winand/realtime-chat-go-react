@@ -9,12 +9,22 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      ID: "",
       chatHistory: []
     }
   }
 
   componentDidMount() {
     connect((msg) => {
+      var json_msg = JSON.parse(msg.data)
+      if (json_msg.setID) {
+        console.log("Client ID:", json_msg.setID)
+        this.setState(prevState => ({
+          ID: json_msg.setID
+        }));
+        return
+      }
+
       console.log("New Message")
       this.setState(prevState => ({
         chatHistory: [...this.state.chatHistory, msg]
@@ -34,7 +44,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header/>
-        <ChatHistory chatHistory={this.state.chatHistory}/>
+        <ChatHistory clientID={this.state.ID} chatHistory={this.state.chatHistory}/>
         <ChatInput send={this.send}/>
       </div>
     );

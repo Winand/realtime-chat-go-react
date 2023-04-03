@@ -6,7 +6,7 @@ class ChatHistory extends Component {
   render() {
     const messages = this.props.chatHistory.map((msg, index) => (
       // https://legacy.reactjs.org/docs/lists-and-keys.html#extracting-components-with-keys
-      <Message key={index} message={msg.data}/>
+      <Message key={index} clientID={this.props.clientID} message={msg.data}/>
     ));
 
     return (
